@@ -1,8 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const {authValidation} = require('./validations/auth.js');
+const {postValidation} = require('./validations/post.js')
 const checkAuth = require('./utils/checkAuth.js');
 const userController = require('./controllers/user.js')
+const postController = require('./controllers/post.js')
 const cors = require('cors')
 const app = express();
 
@@ -14,12 +16,18 @@ mongoose.connect('mongodb+srv://shahriyoradhamov000:Shahriyor2004@cluster0.fprei
 })
 
 
-
+//auth
 app.post('/auth/register', authValidation, userController.register )
 app.post('/auth/login', authValidation, userController.login )
 
 app.get('/auth/me', checkAuth, userController.getMe)
+//posts
 
+app.post('/posts', checkAuth,  postValidation, postController.create)
+
+app.get('/posts', postController.getAll);
+app.get('/posts/:id', postController.getOne );
+app.delete('/posts/:id', postController.remove);
 
 
 
