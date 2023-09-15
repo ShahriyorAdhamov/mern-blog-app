@@ -6,5 +6,10 @@ const authValidation = [
     body('password', 'Пароль должен состоять минимум из 5-символов').isLength({min:5}),
     body('avatarUrl', 'Неверная ссылка на аватарку').optional().isURL()
 ]
+const loginValidation = [
+    body('email', 'Неверный формат почты').isEmail(),
+    body('password', 'Пароль должен состоять минимум из 5-символов').isLength({min:5}),
+    body('avatarUrl', 'Неверная ссылка на аватарку').optional().isURL()
+]
 
-module.exports = {authValidation}
+module.exports = {authValidation, loginValidation}

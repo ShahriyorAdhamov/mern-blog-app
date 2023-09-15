@@ -1,14 +1,11 @@
-const {validationResult} = require('express-validator');
+
 const UserModel = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
     try{
-        const err = validationResult(req)
-        if(!err.isEmpty()) {
-            return res.status(400).json(err.errors)
-        }
+
         const pass = req.body.password.toString();
         const salt = await bcrypt.genSalt(10);
         const hashPass = await bcrypt.hash(pass, salt)
@@ -41,6 +38,7 @@ const register = async (req, res) => {
     }
 
 }
+
 const login = async (req, res) =>{
     try{
         const user = await UserModel.findOne({ email: req.body.email});
@@ -56,7 +54,6 @@ const login = async (req, res) =>{
             })
         }
         const token = jwt.sign({
-            username: user.username,
             _id: user._id
         },
         'secret', 
@@ -64,14 +61,14 @@ const login = async (req, res) =>{
             expiresIn: '30d'
         })
 
-        const { password, userData} = user._doc
+        const { password, ...userData} = user._doc
         return res.json({
             ...userData,
             token
         });
     } catch(err) {
         res.status(500).json({
-            message: 'Не удалось зарегестрироваться'
+            message: 'Не удалось залогиниться'
         })
     }
 }

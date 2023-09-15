@@ -6,7 +6,7 @@ const create =async (req, res) => {
             user: req.userId,
             title: req.body.title,
             description: req.body.description,
-            tags: req.body.tags 
+            tags: req.body.tags.split(',') 
         })
     
         const post = await doc.save();
@@ -19,9 +19,9 @@ const create =async (req, res) => {
 
 }
 
-const getAll = (req, res) => {
+const getAll =async (req, res) => {
     try{
-        const posts = PostModel.find().populate('user').exec();
+        const posts = await PostModel.find().populate('user').exec();
         res.json(posts)
     } catch(err) {
         res.status(500).json({
