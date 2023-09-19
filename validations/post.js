@@ -4,7 +4,7 @@ const postValidation = [
     body('title', 'Введите заголовок статьи').isLength({min:1}).isString(),
     body('description', 'Введите описание статьи').isLength({min:1}),
     body('tags', 'Неправильный формат тэгов(укажите массив)').optional().isString(),
-    body('imageUrl', 'Неверная ссылка на картинку').optional().isURL()
+    body('imageUrl', 'Неверная ссылка на картинку').optional().isString()
 ]
 
 module.exports = {postValidation}

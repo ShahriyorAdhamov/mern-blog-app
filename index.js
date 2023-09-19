@@ -9,13 +9,18 @@ const cors = require('cors');
 const multer = require('multer');
 const handleValidationErrors = require('./utils/handleValidationErrors.js')
 const app = express();
-
+mongoose.set('strictQuery', true)
 app.use('/uploads', express.static('uploads'))
 app.use(express.json());
 app.use(cors());
-mongoose.connect('mongodb+srv://shahriyoradhamov000:Shahriyor2004@cluster0.fpreico.mongodb.net/mern-blog-app?retryWrites=true&w=majority')
+//global mongodb
+//'mongodb+srv://shahriyoradhamov000:Shahriyor2004@cluster0.s06zczi.mongodb.net/mern-blog?retryWrites=true&w=majority'
+
+mongoose.connect('mongodb://127.0.0.1:27017/blog')
 .then(() => {
     console.log('db ok')
+}). catch((err) => {
+    console.log(err)
 })
 
 const storage = multer.diskStorage({

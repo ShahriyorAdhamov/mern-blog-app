@@ -81,9 +81,8 @@ const getMe = async (req, res) => {
                 message: 'Ползоваткль не найден'
             })
         }
-        const { password, userData} = user._doc
         return res.json({
-            userData
+            ...user._doc
         });
 
     }catch {

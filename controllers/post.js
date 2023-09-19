@@ -29,10 +29,10 @@ const getAll =async (req, res) => {
         })
     }
 }
-const getOne = (req, res) => {
+const getOne = async (req, res) => {
     try{
         const postId = req.params.id
-        const post = PostModel.findById({
+        const post = await PostModel.findById({
             _id: postId
         })
         if(!post) {
@@ -47,25 +47,25 @@ const getOne = (req, res) => {
         })
     }
 }
-const remove = (req, res) => {
+const remove = async (req, res) => {
     try{
         const postId = req.params.id
-        PostModel.findByIdAndRemove({
-            _id: postId
-        }, (err, doc) => {
-            if(err) {
-                return res.status(500).json({
-                    message: 'Не удалось удалить статью'
-                })
-            }
-            if(!doc) {
-                return res.status(404).json({
-                    message: 'Статья не найдена'
-                })
-            }
-            res.json({
-                success: true
-            })
+        await PostModel.findByIdAndDelete(postId
+        // }, (err, doc) => {
+        //     if(err) {
+        //         return res.status(500).json({
+        //             message: 'Не удалось удалить статью'
+        //         })
+        //     }
+        //     if(!doc) {
+        //         return res.status(404).json({
+        //             message: 'Статья не найдена'
+        //         })
+        //     }
+
+        )
+        res.json({
+            success: true
         })
     } catch(err) {
         res.status(500).json({
