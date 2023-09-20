@@ -4,9 +4,10 @@ const create =async (req, res) => {
     try{
         const doc = new PostModel({
             user: req.userId,
+            imageUrl: req.body.imageUrl,
             title: req.body.title,
             description: req.body.description,
-            tags: req.body.tags.split(',') 
+            tags: req.body.tags.split(',')
         })
     
         const post = await doc.save();
@@ -32,7 +33,8 @@ const getAll =async (req, res) => {
 const getOne = async (req, res) => {
     try{
         const postId = req.params.id
-        const post = await PostModel.findById({
+        
+        const post = await PostModel.findOne({
             _id: postId
         })
         if(!post) {
@@ -76,14 +78,15 @@ const remove = async (req, res) => {
 const update = (req, res) => {
     try{
         const postId = req.params.id
-        PostModel.findByIdAndUpdate({
+        PostModel.updateOne({
             _id: postId
         },
         {
+            imageUrl: req.imageUrl,
             user: req.userId,
             title: req.body.title,
             description: req.body.description,
-            tags: req.body.tags 
+             tags: req.body.tags.split(',')
         });
         res.json({
             success: true
@@ -95,4 +98,23 @@ const update = (req, res) => {
     }
 }
 
-module.exports = {create, getAll, getOne, remove, update}
+const getLastTags = async (req, res) => {
+    try {
+      const posts = await PostModel.find().limit(5).exec();
+  
+      const tags = posts
+        .map((obj) => obj.tags)
+        .flat()
+        .slice(0, 5);
+  
+      res.json(tags);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: 'Не удалось получить тэги',
+      });
+    }
+  };
+  
+
+module.exports = {create, getAll, getOne, remove, update, getLastTags}
