@@ -52,20 +52,7 @@ const getOne = async (req, res) => {
 const remove = async (req, res) => {
     try{
         const postId = req.params.id
-        await PostModel.findByIdAndDelete(postId
-        // }, (err, doc) => {
-        //     if(err) {
-        //         return res.status(500).json({
-        //             message: 'Не удалось удалить статью'
-        //         })
-        //     }
-        //     if(!doc) {
-        //         return res.status(404).json({
-        //             message: 'Статья не найдена'
-        //         })
-        //     }
-
-        )
+        await PostModel.findByIdAndDelete(postId)
         res.json({
             success: true
         })
@@ -75,23 +62,23 @@ const remove = async (req, res) => {
         })
     }
 }
-const update = (req, res) => {
+const update = async (req, res) => {
+    console.log(req)
     try{
         const postId = req.params.id
-        PostModel.updateOne({
-            _id: postId
-        },
-        {
-            imageUrl: req.imageUrl,
-            user: req.userId,
-            title: req.body.title,
-            description: req.body.description,
-             tags: req.body.tags.split(',')
+        await PostModel.findByIdAndUpdate(
+            postId,
+            {
+                imageUrl: req.body.imageUrl,
+                title: req.body.title,
+                description: req.body.description,
+                // tags: req.body.tags.split(',')
         });
-        res.json({
+        res.status(200).json({
             success: true
         })
     } catch(err) {
+        console.log(err)
         res.status(500).json({
             message: 'Не удалось обновить статью'
         })

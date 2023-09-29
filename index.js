@@ -5,6 +5,7 @@ const {postValidation} = require('./validations/post.js');
 const checkAuth = require('./utils/checkAuth.js');
 const userController = require('./controllers/user.js');
 const postController = require('./controllers/post.js');
+const commentController = require('./controllers/comments.js')
 const cors = require('cors');
 const multer = require('multer');
 const handleValidationErrors = require('./utils/handleValidationErrors.js')
@@ -52,8 +53,10 @@ app.post('/posts', checkAuth,  postValidation,  handleValidationErrors, postCont
 app.get('/posts', postController.getAll);
 app.get('/posts/:id', postController.getOne );
 app.delete('/posts/:id', postController.remove);
-app.patch(`posts/:id`, checkAuth,  postValidation,  handleValidationErrors, postController.update)
+app.patch('/posts/:id', checkAuth,  postValidation,  handleValidationErrors, postController.update)
 
+app.post('/comments/:id',checkAuth, commentController.createComment)
+app.get('/posts/comments/:id', commentController.getPostComments)
 
 
 
