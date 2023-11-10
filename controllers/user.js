@@ -78,7 +78,7 @@ const getMe = async (req, res) => {
         const user = await UserModel.findById(req.userId);
         if(!user) {
             return res.status(404).json({
-                message: 'Ползоваткль не найден'
+                message: 'Ползователь не найден'
             })
         }
         return res.json({

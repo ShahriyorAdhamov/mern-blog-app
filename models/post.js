@@ -11,8 +11,8 @@ const PostSchema = new mongoose.Schema(
       required: true,
     },
     tags: {
-      type: Array,
-      default: [],
+      type: String,
+      default: ''
     },
     comments: {
       type: Array,
@@ -22,6 +22,10 @@ const PostSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+    },
+    viewsCount: {
+      type: Number,
+      default: 0
     },
     imageUrl: String,
   },

@@ -7,7 +7,7 @@ const create =async (req, res) => {
             imageUrl: req.body.imageUrl,
             title: req.body.title,
             description: req.body.description,
-            tags: req.body.tags.split(',')
+            tags: req.body.tags
         })
     
         const post = await doc.save();
@@ -34,8 +34,11 @@ const getOne = async (req, res) => {
     try{
         const postId = req.params.id
         
-        const post = await PostModel.findOne({
+        const post = await PostModel.findOneAndUpdate({
             _id: postId
+        },
+        {
+            $inc: { viewsCount: 1}
         })
         if(!post) {
             return res.status(404).json({
@@ -72,7 +75,7 @@ const update = async (req, res) => {
                 imageUrl: req.body.imageUrl,
                 title: req.body.title,
                 description: req.body.description,
-                // tags: req.body.tags.split(',')
+                tags: req.body.tags
         });
         res.status(200).json({
             success: true
