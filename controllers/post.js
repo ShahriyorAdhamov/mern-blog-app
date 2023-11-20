@@ -1,3 +1,4 @@
+const post = require('../models/post');
 const PostModel = require('../models/post');
 
 const create =async (req, res) => {
@@ -23,6 +24,16 @@ const create =async (req, res) => {
 const getAll =async (req, res) => {
     try{
         const posts = await PostModel.find().populate('user').exec();
+        res.json(posts)
+    } catch(err) {
+        res.status(500).json({
+            message: 'Не удалось получить статьи'
+        })
+    }
+}
+const getPopular =async (req, res) => {
+    try{
+        const posts = await PostModel.find().sort({viewsCount: -1}).populate('user').exec();
         res.json(posts)
     } catch(err) {
         res.status(500).json({
@@ -107,4 +118,4 @@ const getLastTags = async (req, res) => {
   };
   
 
-module.exports = {create, getAll, getOne, remove, update, getLastTags}
+module.exports = {create, getAll, getOne, remove, update, getLastTags, getPopular}
